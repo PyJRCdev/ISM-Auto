@@ -1,4 +1,5 @@
 import tkinter as tk
+import os
 
 # Función para centrar la ventana
 def centrar_ventana(ventana, ancho, alto):
@@ -15,8 +16,9 @@ def crear_gui(iniciar_sesion_func):
     ventana = tk.Tk()
     ventana.title("Portal")
     
-    # Cargar el icono en formato ICO
-    ventana.iconbitmap('C:/Users/Server/Desktop/GitHub/ISM/ISM-Auto/landing_work/assets/ism.ico')  # Cambiar el icono de la ventana
+    # Obtener la ruta del icono
+    icono_path = os.path.join(os.path.dirname(__file__), '..', 'assets', 'ism.ico')
+    ventana.iconbitmap(icono_path)  # Cambiar el icono de la ventana
 
     ancho_ventana = 300
     alto_ventana = 250
