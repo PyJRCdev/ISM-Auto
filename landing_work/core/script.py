@@ -15,11 +15,11 @@ def obtener_ruta_perfil_chrome():
     ruta_perfil = ""
 
     if sistema == "Windows":
-        ruta_perfil = os.path.join(os.getenv('USERPROFILE'), 'AppData', 'Local', 'Google', 'Chrome', 'User Data', 'Default')
+        ruta_perfil = os.path.join(os.getenv('USERPROFILE'), 'AppData', 'Local', 'Google', 'Chrome', 'User Data')
     elif sistema == "Linux":
-        ruta_perfil = os.path.join(os.getenv('HOME'), '.config', 'google-chrome', 'Default')
+        ruta_perfil = os.path.join(os.getenv('HOME'), '.config', 'google-chrome')
     elif sistema == "Darwin":  # macOS
-        ruta_perfil = os.path.join(os.getenv('HOME'), 'Library', 'Application Support', 'Google', 'Chrome', 'Default')
+        ruta_perfil = os.path.join(os.getenv('HOME'), 'Library', 'Application Support', 'Google', 'Chrome')
     
     return ruta_perfil
 
