@@ -1,17 +1,44 @@
+import platform
+import time
+import os
 from selenium import webdriver
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
-import time
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+
+def obtener_ruta_perfil_chrome():
+    sistema = platform.system()
+    ruta_perfil = ""
+
+    if sistema == "Windows":
+        ruta_perfil = os.path.join(os.getenv('USERPROFILE'), 'AppData', 'Local', 'Google', 'Chrome', 'User Data', 'Default')
+    elif sistema == "Linux":
+        ruta_perfil = os.path.join(os.getenv('HOME'), '.config', 'google-chrome', 'Default')
+    elif sistema == "Darwin":  # macOS
+        ruta_perfil = os.path.join(os.getenv('HOME'), 'Library', 'Application Support', 'Google', 'Chrome', 'Default')
+    
+    return ruta_perfil
 
 # Iniciar el navegador
 def iniciar_navegador():
     chrome_options = Options()
     chrome_options.add_argument("--start-maximized")
+    
+    ruta_perfil_chrome = obtener_ruta_perfil_chrome()     # Obtener la ruta del perfil de Chrome
+    if ruta_perfil_chrome and os.path.exists(ruta_perfil_chrome):
+        chrome_options.add_argument(f"--user-data-dir={ruta_perfil_chrome}")
+        print(f"Usando el perfil de Chrome en: {ruta_perfil_chrome}")
+    else:
+        print(f"No se encontró la ruta del perfil de Chrome: {ruta_perfil_chrome}. Usando perfil vacío.")
+    
+    # Eliminar el mensaje "Chrome controlado por software automatizado"
+    chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
+    chrome_options.add_experimental_option('useAutomationExtension', False)
+
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
     return driver
 
